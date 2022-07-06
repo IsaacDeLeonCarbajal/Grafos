@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Grafos</title>
+</head>
+
+<body style="text-align: center; background-color: aquamarine;">
+    <h1>Grafos</h1>
+
+    <div id="div-botones" class="div-resultado" style="left: 5%;">
+        <button id="btn-ver" class="btn-accion">Ver Grafo</button>
+        <br>
+        <button id="btn-agregar-v" class="btn-accion">Agregar Vértice</button>
+        <br>
+        <button id="btn-agregar-a" class="btn-accion">Agregar Arista</button>
+        <br>
+        <button id="btn-eliminar-v" class="btn-accion">Eliminar Vértice</button>
+        <br>
+        <button id="btn-eliminar-a" class="btn-accion">Eliminar Arista</button>
+        <br>
+        <button id="btn-matriz-inc" class="btn-accion">Matriz de Incidencia</button>
+        <br>
+        <button id="btn-matriz-ady" class="btn-accion">Matriz de Adyacencia</button>
+        <br>
+        <button id="btn-lista-ady" class="btn-accion">Lista de Adyacencia</button>
+        <br>
+        <button id="btn-recorrido" class="btn-accion">Recorrido por el Grafo</button>
+        <br>
+        <button id="btn-minimo" class="btn-accion">Camino Mínimo</button>
+        <br><br>
+        <label id="lbl-grafo" class="lbl-info">Representación del grafo</label>
+        <br><br>
+        <label id="lbl-vertices" class="lbl-info">Vértices: 0</label>
+        <br>
+        <label id="lbl-aristas" class="lbl-info">Aristas: 0</label>
+        <br>
+    </div>
+
+    <div id="div-canvas" class="div-resultado" style="left: 7%;">
+        <canvas id="cnv-grafo" style="background-color: deepskyblue; border-width: 5px; border-style: solid;"
+            width="600px" height="500px"></canvas>
+    </div>
+
+    <div id="div-resultado" class="div-resultado" style="font: 1em cursive; display: none; left: 10%;">
+    </div>
+
+    <div id="div-recorrido" class="div-resultado" style="font: 1.2em cursive; float: right; width: 350px;">
+    </div>
+
+    <dialog id="dlg-vertice">
+        <form method="dialog">
+            <h2>Ingrese los datos del vértice</h2>
+
+            <label>Valor: </label>
+            <input type="text" id="inp-valor" style="width: 50%;" placeholder="Valor del vértice">
+            <br><br>
+
+            <button type="submit" class="btn-dialog" value="cancelar">Cancelar</button>
+            <button type="submit" class="btn-dialog" value="aceptar">Insertar</button>
+        </form>
+    </dialog>
+
+    <dialog id="dlg-recorrido">
+        <form method="dialog">
+            <h2>Ingrese el valor del vértice inicial</h2>
+
+            <label>Valor: </label>
+            <input type="text" id="inp-valor-inicial" style="width: 50%;" placeholder="Valor del vértice">
+            <br><br>
+
+            <button type="submit" class="btn-dialog" value="cancelar">Cancelar</button>
+            <button type="submit" class="btn-dialog" value="aceptar">Recorrer</button>
+        </form>
+    </dialog>
+
+    <dialog id="dlg-minimo">
+        <form method="dialog">
+            <h2>Ingrese el valor de los vértices</h2>
+
+            <label>Valor 1: </label>
+            <input type="text" id="inp-min-v1" style="width: 50%;" placeholder="Valor del vértice 1">
+            <br>
+            <label>Valor 2: </label>
+            <input type="text" id="inp-min-v2" style="width: 50%;" placeholder="Valor del vértice 1">
+            <br><br>
+
+            <button type="submit" class="btn-dialog" value="cancelar">Cancelar</button>
+            <button type="submit" class="btn-dialog" value="aceptar">Recorrer</button>
+        </form>
+    </dialog>
+
+    <dialog id="dlg-arista">
+        <form method="dialog">
+            <h2>Ingrese los datos de la arista</h2>
+
+            <label>Vértice 1: </label>
+            <input type="text" id="inp-v1" style="width: 30%;" placeholder="Vértice 1">
+            <br>
+
+            <label>Vértice 2: </label>
+            <input type="text" id="inp-v2" style="width: 30%;" placeholder="Vértice 2">
+            <br>
+
+            <div id="div-ponderacion">
+                <label>Ponderación: </label>
+                <input type="number" id="inp-ponderacion" style="width: 35%;" placeholder="Ponderación" value="1">
+            </div>
+
+            <br><br>
+
+            <button type="submit" class="btn-dialog" value="cancelar">Cancelar</button>
+            <button type="submit" class="btn-dialog" value="aceptar">Insertar</button>
+        </form>
+    </dialog>
+
+    <dialog id="dlg-eliminar">
+        <form method="dialog">
+            <h2 id="titulo-eliminar"></h2>
+
+            <label id="lbl-eliminar"></label>
+            <br><br>
+
+            <label>Indice: </label>
+            <input type="text" id="inp-eliminar" style="width: 45%;" placeholder="Indice/valor a eliminar">
+            <br><br>
+
+            <button type="submit" class="btn-dialog" value="cancelar">Cancelar</button>
+            <button type="submit" class="btn-dialog" value="aceptar">Eliminar</button>
+        </form>
+    </dialog>
+
+    <dialog id="dlg-init">
+        <form method="dialog">
+            <h2>Inicializar el Grafo</h2>
+
+            <label>¿Es dirigido?</label>
+            <select id="slc-dirigido">
+                <option value="si">Si</option>
+                <option value="no" selected>No</option>
+            </select>
+            <br><br>
+
+            <label>¿Es ponderado?</label>
+            <select id="slc-ponderado">
+                <option value="si">Si</option>
+                <option value="no" selected>No</option>
+            </select>
+            <br><br>
+
+            <button type="submit" class="btn-dialog" value="aceptar">Aceptar</button>
+        </form>
+    </dialog>
+
+    <script src="Canvas.js"></script>
+    <script src="Grafo.js"></script>
+
+    <script>
+        var dlgInit = document.getElementById("dlg-init");
+        var dlgArista = document.getElementById("dlg-arista");
+        var dlgVertice = document.getElementById("dlg-vertice");
+        var dlgEliminar = document.getElementById("dlg-eliminar");
+        var dlgRecorrido = document.getElementById("dlg-recorrido");
+        var dlgMinimo = document.getElementById("dlg-minimo");
+        var inpV1 = document.getElementById("inp-v1");
+        var inpV2 = document.getElementById("inp-v2");
+        var inpMinV1 = document.getElementById("inp-min-v1");
+        var inpMinV2 = document.getElementById("inp-min-v2");
+        var inpValor = document.getElementById("inp-valor");
+        var inpValorInicial = document.getElementById("inp-valor-inicial");
+        var inpEliminar = document.getElementById("inp-eliminar");
+        var inpPonderacion = document.getElementById("inp-ponderacion");
+        var lblVertices = document.getElementById("lbl-vertices");
+        var lblAristas = document.getElementById("lbl-aristas");
+        var divCanvas = document.getElementById("div-canvas");
+        var divResultado = document.getElementById("div-resultado");
+        var divRecorrido = document.getElementById("div-recorrido");
+
+        let grafo;
+        let tipoEliminado = "";
+
+        dlgInit.showModal();
+
+        dlgInit.addEventListener('close', () => {
+            let dirigido = (document.getElementById("slc-dirigido").value == "si");
+            let ponderado = (document.getElementById("slc-ponderado").value == "si");
+
+            grafo = new Grafo(dirigido, ponderado, "cnv-grafo");
+            grafo.dibujarGrafo();
+
+            document.getElementById("lbl-grafo").innerHTML = "Grafo " + ((dirigido) ? "" : "no") + " dirigido<br>Grafo " + ((ponderado) ? "" : "no") + " ponderado";
+
+            lblAristas.innerHTML = "Aristas: " + grafo.getAristas().length;
+            lblVertices.innerHTML = "Vertices: " + grafo.getVertices().length;
+            document.getElementById("div-ponderacion").style.display = ((ponderado) ? "inline" : "none");
+        });
+        dlgArista.addEventListener('close', () => {
+            if (dlgArista.returnValue != "aceptar") { //Si se canceló la acción
+                return; //No hacer nada
+            }
+
+            let a = grafo.insertarArista([inpV1.value, inpV2.value], parseInt(inpPonderacion.value));
+
+            if (a) {
+                alert("Se ha insertado la arista " + (a["indice"] + 1));
+
+                lblAristas.innerHTML = "Aristas: " + grafo.getAristas().length;
+            } else {
+                alert("Error al insertar la arista");
+            }
+
+            inpV1.value = "";
+            inpV2.value = "";
+            inpPonderacion.value = "1";
+        });
+        dlgVertice.addEventListener('close', () => {
+            if (dlgVertice.returnValue != "aceptar") { //Si se canceló la acción
+                return; //No hacer nada
+            }
+
+            let v = grafo.insertarVertice(inpValor.value);
+
+            if (v) {
+                alert("Se ha insertado el vértice " + v["valor"]);
+
+                lblVertices.innerHTML = "Vertices: " + grafo.getVertices().length;
+            } else {
+                alert("Error al insertar el vértice");
+            }
+
+            inpValor.value = "";
+        });
+        dlgEliminar.addEventListener('close', () => {
+            if (dlgEliminar.returnValue != "aceptar") { //Si se canceló la acción
+                return; //No hacer nada
+            }
+
+            let error;
+
+            switch (tipoEliminado) {
+                case "Vértice":
+                    error = !grafo.eliminarVertice(inpEliminar.value);
+                    break;
+                case "Arista":
+                    error = !grafo.eliminarArista(inpEliminar.value - 1);
+                    break;
+                default:
+                    throw "Error durante la eliminación de elementos del grafo";
+                    return;
+            }
+
+            if (!error) {
+                alert(tipoEliminado + " eliminado con éxito");
+
+                switch (tipoEliminado) {
+                    case "Vértice":
+                        lblVertices.innerHTML = "Vértices:" + grafo.getVertices().length;
+                        break;
+                    case "Arista":
+                        lblAristas.innerHTML = "Aristas: " + grafo.getAristas().length;
+                        break;
+                    default:
+                        throw "Error durante la eliminación de elementos del grafo";
+                        return;
+                }
+            }
+
+            inpEliminar.value = "";
+        });
+        dlgRecorrido.addEventListener('close', () => {
+            if (dlgRecorrido.returnValue != "aceptar") { //Si se canceló la acción
+                return; //No hacer nada
+            }
+
+            let infoGrafo = grafo.crearRecorrido(inpValorInicial.value);
+
+            if (infoGrafo) {
+                divRecorrido.innerHTML = "RECORRIDO DESDE " + grafo.getVertice(inpValorInicial.value).valor + ":<br>"
+                    + grafo.mostrarRecorrido(infoGrafo.recorrido) + "<br>"
+                    + "Costo: " + infoGrafo.costo + "<br>"
+                    + "Ciclico: " + infoGrafo.ciclico;
+            }
+
+            inpValorInicial.value = "";
+        });
+        dlgMinimo.addEventListener('close', () => {
+            if (dlgMinimo.returnValue != "aceptar") { //Si se canceló la acción
+                return; //No hacer nada
+            }
+
+            let infoGrafo = grafo.crearCaminoMinimo(inpMinV1.value, inpMinV2.value);
+
+            if (infoGrafo) {
+                divRecorrido.innerHTML = "RECORRIDO MÍNIMO (" + grafo.getVertice(inpMinV1.value).valor + ", " + grafo.getVertice(inpMinV2.value).valor + "):<br>"
+                    + grafo.mostrarRecorrido(infoGrafo.recorrido) + "<br>"
+                    + "Costo: " + infoGrafo.costo;
+            }
+
+            inpMinV1.value = "";
+            inpMinV2.value = "";
+        });
+        document.getElementById("btn-agregar-v").addEventListener('click', () => {
+            dlgVertice.showModal();
+        });
+        document.getElementById("btn-agregar-a").addEventListener('click', () => {
+            dlgArista.showModal();
+        });
+        document.getElementById("btn-eliminar-v").addEventListener('click', () => {
+            tipoEliminado = "Vértice";
+            document.getElementById("titulo-eliminar").innerHTML = "Eliminar un vértice";
+            document.getElementById("lbl-eliminar").innerHTML = "Inserte el índice del vértice a eliminar";
+            dlgEliminar.showModal();
+        });
+        document.getElementById("btn-eliminar-a").addEventListener('click', () => {
+            tipoEliminado = "Arista";
+            document.getElementById("titulo-eliminar").innerHTML = "Eliminar una arista";
+            document.getElementById("lbl-eliminar").innerHTML = "Inserte el índice de la arista a eliminar";
+            dlgEliminar.showModal();
+        });
+        document.getElementById("btn-ver").addEventListener('click', () => {
+            grafo.dibujarGrafo("div-resultado");
+            divCanvas.style.display = "inline";
+            divRecorrido.style.display = "inline";
+            divResultado.style.display = "none";
+        });
+        document.getElementById("btn-matriz-ady").addEventListener('click', () => {
+            this.divResultado.innerHTML = grafo.matrizATabla(grafo.crearMatrizAdyacencia(), 'ady'); //Mostrar el texto en el div
+
+            //Actualizar las vistas de los resultados
+            divCanvas.style.display = "none";
+            divRecorrido.style.display = "none";
+            divResultado.style.display = "inline";
+        });
+        document.getElementById("btn-matriz-inc").addEventListener('click', () => {
+            divResultado.innerHTML = grafo.matrizATabla(grafo.crearMatrizIncidencia(), 'inc'); //Mostrar el texto en el div
+
+            //Actualizar las vistas de los resultados
+            divCanvas.style.display = "none";
+            divRecorrido.style.display = "none";
+            divResultado.style.display = "inline";
+        });
+        document.getElementById("btn-lista-ady").addEventListener('click', () => {
+            let listas = grafo.crearListaAdyacencia();
+
+            divResultado.innerHTML = "";
+
+            for (let i = 0; i < listas.length; i++) {
+                divResultado.innerHTML += listas[i].join(" => ") + " => null<br>";
+            }
+
+            divCanvas.style.display = "none";
+            divRecorrido.style.display = "none";
+            divResultado.style.display = "inline";
+        });
+        document.getElementById("btn-recorrido").addEventListener('click', () => {
+            dlgRecorrido.showModal();
+            divCanvas.style.display = "inline";
+            divRecorrido.style.display = "inline";
+            divResultado.style.display = "none";
+        });
+        document.getElementById("btn-minimo").addEventListener('click', () => {
+            dlgMinimo.showModal();
+            divCanvas.style.display = "inline";
+            divRecorrido.style.display = "inline";
+            divResultado.style.display = "none";
+        });
+    </script>
+</body>
+
+</html>
