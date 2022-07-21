@@ -10,11 +10,16 @@ class Canvas {
      */
     constructor(idCanvas) {
         this.canvas = document.getElementById(idCanvas);
+
+        this.init();
+    }
+
+    init(fs, lw) {
         this.context = this.canvas.getContext("2d");
         this.context.textAlign = "center";
         this.context.textBaseline = "middle";
-        this.context.font = "bold 18px cursive";
-        this.context.lineWidth = 4;
+        this.context.font = "bold 20px cursive";
+        this.context.lineWidth = 6;
     }
 
     /**

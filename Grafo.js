@@ -30,6 +30,7 @@ class Grafo {
         this.vertices = [];
         this.aristas = [];
 
+        /*
         //Caso de prueba 1
         this.insertarVertice("A");
         this.insertarVertice("B");
@@ -74,6 +75,7 @@ class Grafo {
         this.insertarArista(["L", "P"], 6);
         this.insertarArista(["M", "N"], 2);
         this.insertarArista(["N", "P"], 12);
+        */
 
         /*
         //Caso de prueba 2
@@ -190,6 +192,28 @@ class Grafo {
                 this.dibujarGrafo(indiceVertice); //Volver a dibujar el grafo con el vértice habilitado
             }
         });
+
+        window.addEventListener('resize', () => {
+            let nW = this.canvas.canvas.parentNode.offsetWidth * 0.9;
+            let nH = this.canvas.canvas.parentNode.offsetHeight * 0.9;
+            this.canvas.canvas.width = nW;
+            this.canvas.canvas.height = nH;
+            this.canvas.canvas.style.width = nW + "px";
+            this.canvas.canvas.style.height = nH + "px";
+
+            this.canvas.init();
+
+            this.vistasVertices = null;
+        });
+
+        let nW = this.canvas.canvas.parentNode.offsetWidth * 0.9;
+        let nH = this.canvas.canvas.parentNode.offsetHeight * 0.9;
+        this.canvas.canvas.width = nW;
+        this.canvas.canvas.height = nH;
+        this.canvas.canvas.style.width = nW + "px";
+        this.canvas.canvas.style.height = nH + "px";
+
+        this.canvas.init();
     }
 
     /**
@@ -381,7 +405,7 @@ class Grafo {
 
             if (indice == -1) { //Si no se definió un índice a procesar
                 alert("Ya se han visitado todos los nodos posibles desde " + this.getVertice(claveOrigen).valor + "\n"
-                + "Tal vez los nodos no tienen un camino posible"); //Mostrar un error
+                    + "Tal vez los nodos no tienen un camino posible"); //Mostrar un error
                 return null; //No hacer nada más
             }
 
@@ -458,7 +482,7 @@ class Grafo {
         if (!this.getVertice(clave)) { //Si el vértice no existe
             alert("El vértice " + clave + " no existe"); //Mostrar un error
             return null; //No hacer nada más
-        } else if (typeof(clave) == "string") { //Si se está buscando el vértice por el valor
+        } else if (typeof (clave) == "string") { //Si se está buscando el vértice por el valor
             //Buscar por el índice
             clave = this.getVertice(clave).indice;
         }
@@ -653,9 +677,9 @@ class Grafo {
      * @returns 
      */
     matrizATabla(matriz, tipo) {
-        let texto = "<table border>\n"; //Texto HTML para mostrar la tabla
+        let texto = "<table class='table table-primary table-striped table-striped-columns table-sm' style='table-layout: fixed; width: 100%; font-size: 12px;'>\n"; //Texto HTML para mostrar la tabla
 
-        texto += "    <tr>\n        <th>" + ((tipo == 'ady') ? "V/V" : "V/A") + "</th>\n";
+        texto += "    <thead>\n        <th>" + ((tipo == 'ady') ? "V/V" : "V/A") + "</th>\n";
 
         for (let x = 0; x < matriz.length; x++) { //Recorrer las filas
             if ((tipo == 'inc') && !this.getArista(x)) { //Si la arista no existe
@@ -667,7 +691,7 @@ class Grafo {
             texto += "        <th>" + ((tipo == 'ady') ? (this.getVertice(x).valor) : x + 1) + "</th>\n"; //Mostrar los números del eje x
         }
 
-        texto += "    </tr>\n"; //Cerrar la fila
+        texto += "    </thead>\n"; //Cerrar la fila
 
         for (let y = 0; y < matriz[0].length; y++) { //Recorrer las columnas
             let v = this.getVertice(y); //Obtener el vértice
@@ -706,7 +730,7 @@ class Grafo {
     dibujarGrafo(indiceHabilitado) {
         this.canvas.limpiar();
 
-        const radio = 20; //Radio de los vértices
+        const radio = this.canvas.canvas.width * 0.03; //Radio de los vértices
 
         if (this.vistasVertices == null) { //Si el grafo debe ser redibujado desde su estado inicial
             this.vistasVertices = []; //Crear un arreglo para guardar las vistas de los vértices
@@ -810,7 +834,7 @@ class Grafo {
             this.canvas.dibujarTexto((x1 + x2) / 2, (y1 + y2) / 2, ponderacion, "rgb(245, 245, 220)");
         }
     }
-    
+
     /**
      * Dibujar un lazo en el canvas
      * 
@@ -818,7 +842,7 @@ class Grafo {
      * @param {number} y Posición y del centro vértice dueño del lazo
      * @param {number} ponderacion Ponderación del lazo
      */
-     dibujarLazo(x, y, ponderacion) {
+    dibujarLazo(x, y, ponderacion) {
         this.canvas.dibujarCirculo(x - 30, y, 30);
 
         if (this.esPonderado) {

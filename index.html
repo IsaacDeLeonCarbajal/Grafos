@@ -6,50 +6,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <title>Grafos</title>
 </head>
 
 <body style="text-align: center; background-color: aquamarine;">
-    <h1>Grafos</h1>
+    <div class="col-12 vh-100 d-flex flex-column">
+        <h1 class="col my-3 flex-grow-0">Grafos</h1>
 
-    <div id="div-botones" class="div-resultado" style="left: 5%;">
-        <button id="btn-ver" class="btn-accion">Ver Grafo</button>
-        <br>
-        <button id="btn-agregar-v" class="btn-accion">Agregar Vértice</button>
-        <br>
-        <button id="btn-agregar-a" class="btn-accion">Agregar Arista</button>
-        <br>
-        <button id="btn-eliminar-v" class="btn-accion">Eliminar Vértice</button>
-        <br>
-        <button id="btn-eliminar-a" class="btn-accion">Eliminar Arista</button>
-        <br>
-        <button id="btn-matriz-inc" class="btn-accion">Matriz de Incidencia</button>
-        <br>
-        <button id="btn-matriz-ady" class="btn-accion">Matriz de Adyacencia</button>
-        <br>
-        <button id="btn-lista-ady" class="btn-accion">Lista de Adyacencia</button>
-        <br>
-        <button id="btn-recorrido" class="btn-accion">Recorrido por el Grafo</button>
-        <br>
-        <button id="btn-minimo" class="btn-accion">Camino Mínimo</button>
-        <br><br>
-        <label id="lbl-grafo" class="lbl-info">Representación del grafo</label>
-        <br><br>
-        <label id="lbl-vertices" class="lbl-info">Vértices: 0</label>
-        <br>
-        <label id="lbl-aristas" class="lbl-info">Aristas: 0</label>
-        <br>
-    </div>
+        <div class="row col m-0 flex-grow-1">
+            <div class="col-2 fs-6" id="div-botones">
+                <button id="btn-ver" class="col-12 fw-bold btn-accion">Ver Grafo</button>
+                <button id="btn-agregar-v" class="col-12 fw-bold btn-accion">Agregar Vértice</button>
+                <button id="btn-agregar-a" class="col-12 fw-bold btn-accion">Agregar Arista</button>
+                <button id="btn-eliminar-v" class="col-12 fw-bold btn-accion">Eliminar Vértice</button>
+                <button id="btn-eliminar-a" class="col-12 fw-bold btn-accion">Eliminar Arista</button>
+                <button id="btn-matriz-inc" class="col-12 fw-bold btn-accion">Matriz Incidencia</button>
+                <button id="btn-matriz-ady" class="col-12 fw-bold btn-accion">Matriz Adyacencia</button>
+                <button id="btn-lista-ady" class="col-12 fw-bold btn-accion">Lista Adyacencia</button>
+                <button id="btn-recorrido" class="col-12 fw-bold btn-accion">Recorrido Grafo</button>
+                <button id="btn-minimo" class="col-12 fw-bold btn-accion">Camino Mínimo</button>
+                <div class="col-12 fs-5 fw-bold">
+                    <label id="lbl-grafo" class="col-12">Representación del grafo</label>
+                    <label id="lbl-vertices" class="col-12">Vértices: 0</label>
+                    <label id="lbl-aristas" class="col-12">Aristas: 0</label>
+                </div>
+            </div>
 
-    <div id="div-canvas" class="div-resultado" style="left: 7%;">
-        <canvas id="cnv-grafo" style="background-color: deepskyblue; border-width: 5px; border-style: solid;"
-            width="600px" height="500px"></canvas>
-    </div>
+            <div class="col-10 d-flex flex-row">
+                <div class="col-9" id="div-canvas">
+                    <canvas id="cnv-grafo" style="height: 500px; width: 500px; background-color: deepskyblue; border-width: 5px; border-style: solid;"></canvas>
+                </div>
 
-    <div id="div-resultado" class="div-resultado" style="font: 1em cursive; display: none; left: 10%;">
-    </div>
+                <div class="col flex-grow-1">
+                    <div id="div-resultado" class="col-12 fs-6" style="display: none;"></div>
 
-    <div id="div-recorrido" class="div-resultado" style="font: 1.2em cursive; float: right; width: 350px;">
+                    <div id="div-recorrido" class="col-12 fw-bold fs-5" style="display: nobe;"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <dialog id="dlg-vertice">
@@ -179,6 +174,7 @@
         var divCanvas = document.getElementById("div-canvas");
         var divResultado = document.getElementById("div-resultado");
         var divRecorrido = document.getElementById("div-recorrido");
+        var cnvGrafo = document.getElementById("cnv-grafo");
 
         let grafo;
         let tipoEliminado = "";
@@ -206,7 +202,7 @@
             let a = grafo.insertarArista([inpV1.value, inpV2.value], parseInt(inpPonderacion.value));
 
             if (a) {
-                alert("Se ha insertado la arista " + (a["indice"] + 1));
+                alert("Se ha insertado la arista " + (a.indice + 1));
 
                 lblAristas.innerHTML = "Aristas: " + grafo.getAristas().length;
             } else {
@@ -225,7 +221,7 @@
             let v = grafo.insertarVertice(inpValor.value);
 
             if (v) {
-                alert("Se ha insertado el vértice " + v["valor"]);
+                alert("Se ha insertado el vértice " + v.valor);
 
                 lblVertices.innerHTML = "Vertices: " + grafo.getVertices().length;
             } else {
@@ -239,34 +235,22 @@
                 return; //No hacer nada
             }
 
-            let error;
-
             switch (tipoEliminado) {
                 case "Vértice":
-                    error = !grafo.eliminarVertice(inpEliminar.value);
+                    if (grafo.eliminarVertice(inpEliminar.value)) { //Si se eliminó el vértice
+                        alert(tipoEliminado + " eliminado con éxito");
+                        lblVertices.innerHTML = "Vértices:" + grafo.getVertices().length;
+                    }
                     break;
                 case "Arista":
-                    error = !grafo.eliminarArista(inpEliminar.value - 1);
+                    if (grafo.eliminarArista(inpEliminar.value - 1)) { //Si se eliminó la arista
+                        alert(tipoEliminado + " eliminado con éxito");
+                        lblAristas.innerHTML = "Aristas: " + grafo.getAristas().length;
+                    }
                     break;
                 default:
                     throw "Error durante la eliminación de elementos del grafo";
                     return;
-            }
-
-            if (!error) {
-                alert(tipoEliminado + " eliminado con éxito");
-
-                switch (tipoEliminado) {
-                    case "Vértice":
-                        lblVertices.innerHTML = "Vértices:" + grafo.getVertices().length;
-                        break;
-                    case "Arista":
-                        lblAristas.innerHTML = "Aristas: " + grafo.getAristas().length;
-                        break;
-                    default:
-                        throw "Error durante la eliminación de elementos del grafo";
-                        return;
-                }
             }
 
             inpEliminar.value = "";
@@ -311,18 +295,21 @@
         });
         document.getElementById("btn-eliminar-v").addEventListener('click', () => {
             tipoEliminado = "Vértice";
+
             document.getElementById("titulo-eliminar").innerHTML = "Eliminar un vértice";
             document.getElementById("lbl-eliminar").innerHTML = "Inserte el índice del vértice a eliminar";
             dlgEliminar.showModal();
         });
         document.getElementById("btn-eliminar-a").addEventListener('click', () => {
             tipoEliminado = "Arista";
+
             document.getElementById("titulo-eliminar").innerHTML = "Eliminar una arista";
             document.getElementById("lbl-eliminar").innerHTML = "Inserte el índice de la arista a eliminar";
             dlgEliminar.showModal();
         });
         document.getElementById("btn-ver").addEventListener('click', () => {
-            grafo.dibujarGrafo("div-resultado");
+            grafo.dibujarGrafo();
+
             divCanvas.style.display = "inline";
             divRecorrido.style.display = "inline";
             divResultado.style.display = "none";
@@ -358,12 +345,14 @@
         });
         document.getElementById("btn-recorrido").addEventListener('click', () => {
             dlgRecorrido.showModal();
+
             divCanvas.style.display = "inline";
             divRecorrido.style.display = "inline";
             divResultado.style.display = "none";
         });
         document.getElementById("btn-minimo").addEventListener('click', () => {
             dlgMinimo.showModal();
+
             divCanvas.style.display = "inline";
             divRecorrido.style.display = "inline";
             divResultado.style.display = "none";

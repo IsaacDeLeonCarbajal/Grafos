@@ -18,9 +18,7 @@ button {
 }
 
 .btn-accion {
-    font-size: 1.3em;
-    font-weight: bold;
-    border-width: 4px;
+    border-width: 3px;
     border-radius: 5px;
     border-style: solid;
     background-color: rgb(140, 169, 227);
@@ -43,12 +41,6 @@ th {
 td {
     font-size: 1.5em;
     text-align: center;
-}
-
-.lbl-info {
-    font-family: cursive;
-    font-size: 1.3em;
-    font-weight: bold;
 }
 
 .btn-dialog {
